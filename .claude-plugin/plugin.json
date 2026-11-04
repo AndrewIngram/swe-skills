@@ -1,6 +1,6 @@
 {
   "name": "swe-skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent skills for software engineering. Starts with use-dependencies-idiomatically: learn each library's model before using it, instead of reinventing the wheel or fighting the framework.",
   "author": {
     "name": "Andy Ingram",
