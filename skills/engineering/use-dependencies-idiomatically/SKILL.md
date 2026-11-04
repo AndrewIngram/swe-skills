@@ -1,6 +1,6 @@
 ---
 name: use-dependencies-idiomatically
-description: "Idiomatic use of the libraries and frameworks a project depends on: learning each one's model instead of reinventing the wheel or fighting the framework. Use before writing a general-purpose helper (retries, caching, pagination, concurrency, parsing, validation, date math); when building on or extending a library or framework (ORM, data-fetching client, UI kit, state manager, workflow engine, test runner); when a library, or the installed version of it, seems not to support what you need; when code fights one (casts at its types, private APIs, patches, duplicated state, timing workarounds) or uses it verbosely; when adding a package; and when reviewing a change or auditing a codebase's use of a dependency."
+description: "Idiomatic use of the libraries and frameworks a project depends on: learning each one's model instead of reinventing the wheel or fighting the framework. Use before writing a general-purpose helper (retries, caching, pagination, concurrency, parsing, validation, date math); when building on or extending a library or framework (ORM, data-fetching client, UI kit, state manager, workflow engine, test runner); when a library, or the installed version of it, seems not to support what you need; when code fights one (casts at its types, private APIs, patches, duplicated state, timing workarounds) or uses it verbosely; when adding or upgrading a package; and when reviewing a change or auditing a codebase's use of a dependency."
 ---
 
 # Use dependencies idiomatically
@@ -9,9 +9,14 @@ Every dependency was built for a particular shape of problem. Its API encodes th
 
 **Friction is a smell**: a cast, patch or workaround on the obvious path means the model is misread or the tool is wrong. The costliest violations have no friction at all: they type-check and look local while defeating a guarantee the library exists to provide, so look for them on purpose.
 
-## Writing code that uses a dependency
+Writing code that uses a dependency follows the steps below. The other tasks start from their own file, which reuses those steps:
 
-The default path. Reviewing, auditing, adding and upgrading branch off it ([below](#reviewing-auditing-adding-and-upgrading)).
+- Reviewing someone else's change: [REVIEWING.md](REVIEWING.md).
+- Auditing a codebase's use of a dependency: [AUDITING.md](AUDITING.md).
+- Adding a package, or upgrading a dependency or the runtime: [UPGRADING.md](UPGRADING.md).
+- Finding, writing or updating the project's guidance for a dependency: [GUIDANCE.md](GUIDANCE.md).
+
+## Writing code that uses a dependency
 
 1. **Restate the problem.** Watch for the **XY problem**: the task often arrives as a solution, from you or the user. Restate it as the general problem:
    - "Retry the upload three times" is a retry policy.
@@ -48,21 +53,21 @@ The default path. Reviewing, auditing, adding and upgrading branch off it ([belo
    - **The problem matches the model:** use it.
    - **Part of it falls outside the main API:** use the documented **escape hatch** for that part (raw SQL in an ORM, a headless component, a custom serializer). Escape hatches are part of the design.
    - **The installed version lacks it:** if the changelog shows a newer version has it, propose the upgrade per [UPGRADING.md](UPGRADING.md).
-   - **Impedance mismatch:** use a dependency whose model fits, or plain code that stays clear of this one, behind a **seam** we own. Being installed, or used nearby, does not make a library the right tool.
+   - **Impedance mismatch:** use a dependency whose model fits, or plain code that stays clear of this one, behind a **seam** we own. Fit decides, whatever is already installed or used nearby.
 
    **Done when** you have picked one and can justify it from the model.
 
 5. **Write it the library's way, on its public API.** The first version that works is often not the idiomatic one. Where neighbouring code and the canonical example disagree, follow the canonical example and tell the user about the drift. Run the library's own checks as you go; if the project leaves them off, say what turning them on would catch.
 
-   **Done when** the library's checks pass, no smell below applies (or each that does is a choice you will report), and the library's maintainers would recognise the code as their library used as designed.
+   **Done when** the library's checks pass, each smell below is either absent or a deliberate choice you will report, and the library's maintainers would recognise the code as their library used as designed.
 
 6. **When friction persists**, first adapt our design to the library's model; its constraints often encode a lesson, as a job queue's at-least-once delivery asks for idempotent handlers. Then revisit step 4. Work against the library only with the user's agreement, naming the undocumented behaviour you rely on in the proposal and in a comment at the workaround. A conflict between the model and a product requirement is the user's call.
 
 ## Smells: fighting the library
 
-Each sends you back to step 4. **Rank by what the library is there to provide**: a defeated guarantee outranks everything else, even when nothing is broken today, and a house rule that encodes the model takes the model's severity.
+Each sends you back to step 4. To rank findings, use the severity rule in [REVIEWING.md](REVIEWING.md#ranking-findings).
 
-- **Defeated guarantee**: mutating state the framework expects you to replace, one database session or connection shared across requests or threads, a side effect inside a render or a hook the framework may re-run, generated code edited by hand or imported outside the module it was generated for. These type-check cleanly, so search for them deliberately.
+- **Defeated guarantee**, the most serious: mutating state the framework expects you to replace, one database session or connection shared across requests or threads, a side effect inside a render or a hook the framework may re-run, generated code edited by hand or imported outside the module it was generated for. These type-check cleanly, so search for them deliberately.
 - Casts or type-checker suppressions (`as`, `any`, `@ts-expect-error`, `# type: ignore`) where our code meets the library's types.
 - **Private API**: internal paths (`pkg/dist/…`, `pkg._internal`), underscore names, undocumented exports, casts into a library object's private fields, behaviour found only in the source. An unstable or experimental API is documented but outside semver: use one when the docs recommend it here, and say so.
 - A patch that changes how the library behaves (package-manager patch, monkey-patching, vendored fork). A patch that makes it do what its docs already promise is a bug fix and the right move: keep it to the fix and link the upstream issue.
@@ -83,12 +88,5 @@ The code works on public API, but an **affordance** built for this case would ma
 - Imperative code for something the library lets you declare: a schema, a variant, a relation, a policy.
 
 Proportion runs both ways: when a few clear lines of plain code do the job, the plain code is idiomatic.
-
-## Reviewing, auditing, adding and upgrading
-
-- Reviewing someone else's change: read [REVIEWING.md](REVIEWING.md).
-- Auditing a codebase's use of a dependency: read [AUDITING.md](AUDITING.md).
-- Adding a package, or upgrading a dependency or the runtime: read [UPGRADING.md](UPGRADING.md) first.
-- Finding, writing or updating the project's guidance for a dependency: read [GUIDANCE.md](GUIDANCE.md).
 
 **Reply:** the library features that carry the behaviour you did not write; for general-purpose code you wrote yourself, what you checked and why nothing fit; each dependency you passed over, and the part of its model that did not match; and each smell you kept, with the reason. When you learned something durable about the dependency, add the guidance you propose, per [GUIDANCE.md](GUIDANCE.md).

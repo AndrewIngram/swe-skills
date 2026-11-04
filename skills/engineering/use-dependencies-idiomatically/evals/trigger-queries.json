@@ -45,7 +45,7 @@
   },
   {
     "query": "bump all the @aws-sdk/* packages to the latest v3 minor and fix whatever breaks in the build",
-    "should_trigger": false
+    "should_trigger": true
   },
   {
     "query": "run npm audit and tell me which of the high-severity vulns are actually reachable from our code vs only in dev tooling",
@@ -109,7 +109,7 @@
   },
   {
     "query": "upgrade react-router from v6 to v7 in the dashboard, following their migration guide. routes are in src/routes and we use createBrowserRouter",
-    "should_trigger": false
+    "should_trigger": true
   },
   {
     "query": "can you audit how apps/web uses relay? we've had a few bugs where a component re-rendered with data it never asked for, and I suspect our patterns have drifted over the last year",
@@ -134,5 +134,25 @@
   {
     "query": "we use tsyringe for DI in the api. EmailService should be a singleton but the logger should be scoped per request, and right now I'm caching instances by hand in a module-level Map. can you set that up properly in src/container.ts?",
     "should_trigger": true
+  },
+  {
+    "query": "dependabot opened a PR bumping pydantic from 2.6 to 2.10 in the api service. CI is green, can you check it's actually safe and merge it if so",
+    "should_trigger": true
+  },
+  {
+    "query": "we're on prisma 5.14, can you upgrade the api to prisma 6? the schema is in packages/db/schema.prisma and we run it on lambda",
+    "should_trigger": true
+  },
+  {
+    "query": "move the frontend from next 14 to next 15. app router everywhere, a couple of route handlers use cookies() and headers()",
+    "should_trigger": true
+  },
+  {
+    "query": "bump the version of our own @acme/ui package to 2.3.0 and write the CHANGELOG entry from the commits since the last tag",
+    "should_trigger": false
+  },
+  {
+    "query": "which versions of lodash are installed across the workspaces? I think we have three different ones in the lockfile",
+    "should_trigger": false
   }
 ]

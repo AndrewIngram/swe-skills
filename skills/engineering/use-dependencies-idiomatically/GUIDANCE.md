@@ -21,6 +21,7 @@ Record what an agent cannot find by looking:
 - deliberate house decisions that depart from the library's defaults, each with its reason;
 - the doc pages that settled each point;
 - which of the library's checks the project runs;
+- the constraints our usage runs under, and which output each applies to (for example: API responses pass through a gateway with a fixed payload limit, so the serializer's defaults bound every endpoint), with any incident that taught it;
 - the version the entry was written against.
 
 Leave the API itself to the docs, which step 3 reads anyway. A rule a tool can check belongs in a lint rule or compiler option, with the guidance pointing at it.

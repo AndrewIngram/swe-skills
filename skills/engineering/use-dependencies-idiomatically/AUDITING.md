@@ -16,10 +16,12 @@ Reached from [SKILL.md](SKILL.md) when the task is the whole codebase's use of a
 
 4. **When delegating, split the work by guarantee or by surface**, so that each surface has one owner and nothing sits between the areas of the runtime API. Brief each agent with the notes and doc links, so it can find violations you have not thought of yet.
 
-5. **Rank the findings** by SKILL.md's severity rule: a defeated guarantee first, then the other fighting smells, then underuse.
+5. **Rank the findings** by exposure, following [REVIEWING.md](REVIEWING.md#ranking-findings). Group a rule's violations by the conditions they share, so each group is one finding.
+
+   **Done when** each finding has its conditions, the evidence for or against them, and its tier.
 
 6. **Propose enforcement** for each rule a tool can check: the library's own lint rule or compiler option first, then a project lint rule. Enforced rules are how the next change gets it right first time.
 
 7. **Propose the notes as guidance**, per [GUIDANCE.md](GUIDANCE.md), for the rules a tool cannot check, so the next session starts from them.
 
-**Reply:** the notes with their sources, both counts for each rule, the findings in severity order, and the enforcement and guidance you propose.
+**Reply:** the notes with their sources, both counts for each rule, the findings in severity order with each one's tier and evidence, and the enforcement and guidance you propose.
