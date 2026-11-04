@@ -22,7 +22,7 @@ The default path. Reviewing, auditing, adding and upgrading branch off it ([belo
    **Done when** you can name the problem in the words the library's docs would use.
 
 2. **Find where it is already solved**, nearest first:
-   1. The framework you are inside: a workflow engine's retry policies and timers, a GraphQL client's pagination and store updaters, a test runner's fake timers.
+   1. The framework you are inside: a web framework's request validation, an ORM's eager loading, a test runner's fake timers.
    2. The project's declared dependencies (`package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`) and how the codebase imports them. Existing usage shows the house convention, which can differ from the library's design.
    3. The project's shared packages, which often wrap a dependency the way the project wants it used.
    4. The standard library, for the runtime version in use (`engines`, `.nvmrc`, `requires-python`). Broad ones cover more than people remember: Python's `itertools`, `collections`, `functools`, `pathlib`; modern Node's `fetch`, `AbortSignal.timeout`, `util.parseArgs`, `node:test`.
@@ -40,13 +40,13 @@ The default path. Reviewing, auditing, adding and upgrading branch off it ([belo
    **Done when** you can answer from the docs, before writing or judging code that uses it:
    - What was it built for, and what does it deliberately leave out?
    - What does it own (store, cache, lifecycle, retries, transactions), what does it generate or ask you to declare (codegen output, schemas, types), and which part of your code is each piece for?
-   - What **guarantee** does it maintain (data masking, workflow determinism, transaction isolation), between which parts of the system, and what would quietly defeat it? It often sits between your own modules.
+   - What **guarantee** does it maintain (transaction isolation, a UI framework's one-way data flow, a message queue's per-key ordering), between which parts of the system, and what would quietly defeat it? It often sits between your own modules.
    - Which public API and documented extension points (options, plugins, middleware, hooks, escape hatches) cover this, and what does the canonical example look like, down to which module imports what?
    - What checks does it ship (a lint plugin, compiler or codegen validation, a strict type mode), and does the project run them?
 
 4. **Choose the fit:**
    - **The problem matches the model:** use it.
-   - **Part of it falls outside the main API:** use the documented **escape hatch** for that part (raw SQL in an ORM, a headless component, a custom resolver). Escape hatches are part of the design.
+   - **Part of it falls outside the main API:** use the documented **escape hatch** for that part (raw SQL in an ORM, a headless component, a custom serializer). Escape hatches are part of the design.
    - **The installed version lacks it:** if the changelog shows a newer version has it, propose the upgrade per [UPGRADING.md](UPGRADING.md).
    - **Impedance mismatch:** use a dependency whose model fits, or plain code that stays clear of this one, behind a **seam** we own. Being installed, or used nearby, does not make a library the right tool.
 
@@ -56,17 +56,17 @@ The default path. Reviewing, auditing, adding and upgrading branch off it ([belo
 
    **Done when** the library's checks pass, no smell below applies (or each that does is a choice you will report), and the library's maintainers would recognise the code as their library used as designed.
 
-6. **When friction persists**, first adapt our design to the library's model; its constraints often encode a lesson (a workflow engine's determinism rules, a GraphQL client's data masking). Then revisit step 4. Work against the library only with the user's agreement, naming the undocumented behaviour you rely on in the proposal and in a comment at the workaround. A conflict between the model and a product requirement is the user's call.
+6. **When friction persists**, first adapt our design to the library's model; its constraints often encode a lesson, as a job queue's at-least-once delivery asks for idempotent handlers. Then revisit step 4. Work against the library only with the user's agreement, naming the undocumented behaviour you rely on in the proposal and in a comment at the workaround. A conflict between the model and a product requirement is the user's call.
 
 ## Smells: fighting the library
 
 Each sends you back to step 4. **Rank by what the library is there to provide**: a defeated guarantee outranks everything else, even when nothing is broken today, and a house rule that encodes the model takes the model's severity.
 
-- **Defeated guarantee**: generated code used outside the module it was generated for (another component's fragment types), reading another module's masked data, one fragment or schema shared across unrelated callers, nondeterminism inside a deterministic workflow. These type-check cleanly, so search for them deliberately.
+- **Defeated guarantee**: mutating state the framework expects you to replace, one database session or connection shared across requests or threads, a side effect inside a render or a hook the framework may re-run, generated code edited by hand or imported outside the module it was generated for. These type-check cleanly, so search for them deliberately.
 - Casts or type-checker suppressions (`as`, `any`, `@ts-expect-error`, `# type: ignore`) where our code meets the library's types.
 - **Private API**: internal paths (`pkg/dist/…`, `pkg._internal`), underscore names, undocumented exports, casts into a library object's private fields, behaviour found only in the source. An unstable or experimental API is documented but outside semver: use one when the docs recommend it here, and say so.
 - A patch that changes how the library behaves (package-manager patch, monkey-patching, vendored fork). A patch that makes it do what its docs already promise is a bug fix and the right move: keep it to the fix and link the upstream issue.
-- Duplicated state: a second **source of truth** for something the library owns, such as a GraphQL cache mirrored into store state or retry counts the framework already tracks.
+- Duplicated state: a second **source of truth** for something the library owns, such as a data-fetching cache mirrored into store state, form values copied out of the form library, or retry counts the queue already tracks.
 - Timers, flags or effect chains that run code "after" the library, where it offers a callback, event or hook.
 - A default overridden at every call site, or a wrapper that undoes a behaviour on every call.
 - A **shallow** wrapper that mostly renames the API it wraps. Apply the **deletion test**: if deleting it only moves its calls back to the library, it is not earning its keep.

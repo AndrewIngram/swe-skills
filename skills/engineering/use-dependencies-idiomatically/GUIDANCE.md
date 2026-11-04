@@ -16,7 +16,7 @@ Search where this project keeps guidance, for the package name or a topic that c
 
 Record what an agent cannot find by looking:
 
-- each guarantee and ownership rule, generated code included (for example: another module's generated fragment types are private, so derive props from that module's public signature);
+- each guarantee and ownership rule, generated code included (for example: each request owns its own database session; generated client code changes only by regenerating it from its schema);
 - the canonical structure in this codebase: which modules import what, and where the library is configured;
 - deliberate house decisions that depart from the library's defaults, each with its reason;
 - the doc pages that settled each point;
