@@ -1,0 +1,138 @@
+[
+  {
+    "query": "our nightly sync job calls the stripe api and sometimes gets 429s. can you wrap `syncInvoices` in a retry with exponential backoff + jitter? it's in src/jobs/syncInvoices.ts, the job itself runs on bullmq",
+    "should_trigger": true
+  },
+  {
+    "query": "The search page (src/pages/Search.tsx) fires a fetch in a useEffect on every keystroke and sometimes an older response lands after a newer one and overwrites the results. We use @tanstack/react-query everywhere else in the app. Can you fix the race?",
+    "should_trigger": true
+  },
+  {
+    "query": "need infinite scroll on the activity feed. ActivityFeed.tsx uses a relay fragment on Viewer. plan is to keep the endCursor in useState and fetchQuery the next page when the sentinel div is visible, can you wire that up",
+    "should_trigger": true
+  },
+  {
+    "query": "I need row_number() over (partition by account_id order by created_at desc) in a Prisma query to get each account's latest 3 invoices. Prisma's API doesn't seem to support window functions so I'm thinking of pulling all invoices and doing it in JS. Is there a cleaner way? The table has ~2M rows",
+    "should_trigger": true
+  },
+  {
+    "query": "useForm from react-hook-form keeps giving me `Type 'Partial<ProfileValues>' is not assignable` when I pass defaultValues from the API response. I've put `as any` in 4 places to get it compiling. can you clean that up in src/settings/ProfileForm.tsx",
+    "should_trigger": true
+  },
+  {
+    "query": "Product wants the MUI X DatePicker to stay open after you pick a date, until the user clicks Done. Can you set up a pnpm patch for @mui/x-date-pickers that removes the auto-close?",
+    "should_trigger": true
+  },
+  {
+    "query": "write a small helper in our python service (app/clients/batch.py) that takes a list of urls and fetches them with httpx, max 5 in flight at once, 10s timeout each, returns results in the same order as the input",
+    "should_trigger": true
+  },
+  {
+    "query": "thinking of adding date-fns so the dashboard can show '3 days ago' style timestamps on comments. dayjs is already in package.json for the date picker i think. go ahead and add whatever makes sense",
+    "should_trigger": true
+  },
+  {
+    "query": "can you review this diff before I merge? it adds a zustand store that copies the current user out of the Apollo cache so components don't need useQuery, and after the updateProfile mutation it does setTimeout(() => readStore(), 0) so the store has caught up",
+    "should_trigger": true
+  },
+  {
+    "query": "our temporal approval workflow loops with sleep('30 seconds') and an activity that checks the db for whether the manager approved. history is getting huge on long-running ones. how should we restructure it?",
+    "should_trigger": true
+  },
+  {
+    "query": "Refactor OrderService so the repository and the email client come in through the constructor instead of being imported singletons, so I can pass fakes in the tests",
+    "should_trigger": false
+  },
+  {
+    "query": "bump all the @aws-sdk/* packages to the latest v3 minor and fix whatever breaks in the build",
+    "should_trigger": false
+  },
+  {
+    "query": "run npm audit and tell me which of the high-severity vulns are actually reachable from our code vs only in dev tooling",
+    "should_trigger": false
+  },
+  {
+    "query": "our main webpack bundle is 4.2MB, can you give me a breakdown of which node_modules are taking up the most space",
+    "should_trigger": false
+  },
+  {
+    "query": "draw me a graph of which modules in packages/core import which, I think there's a circular import between orders and invoices somewhere",
+    "should_trigger": false
+  },
+  {
+    "query": "Write jest unit tests for parseInvoiceLine in src/billing/parse.ts. Cover negative quantities, a missing currency, and a line with trailing whitespace.",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the actual difference between staleTime and gcTime in react query? when would you set one but not the other",
+    "should_trigger": false
+  },
+  {
+    "query": "CI is failing with ERR_PNPM_OUTDATED_LOCKFILE after I merged main into my branch, can you fix it",
+    "should_trigger": false
+  },
+  {
+    "query": "rename the userId column to accountId everywhere: the prisma schema, a migration, and all the queries and types that reference it",
+    "should_trigger": false
+  },
+  {
+    "query": "the signup view in our django app 500s when the body is empty. traceback says KeyError: 'email' at accounts/views.py line 42. fix it",
+    "should_trigger": false
+  },
+  {
+    "query": "can you tidy up src/billing/upsertCustomer.ts? it does prisma.customer.findUnique by email, then calls create or update depending on whether it found one. works fine, it just feels clunky and I've seen it race once in prod",
+    "should_trigger": true
+  },
+  {
+    "query": "useProjects.ts calls useQuery for the projects list, then a useMemo filters out archived ones and sorts by name before returning. three components use it and the dashboard re-renders more than I'd like, can you take a look",
+    "should_trigger": true
+  },
+  {
+    "query": "Our zod signup schema validates everything as strings, then a separate normalizeSignup() trims the fields, lowercases the email and turns `age` into a number with parseInt. Can you simplify this? src/auth/signupSchema.ts",
+    "should_trigger": true
+  },
+  {
+    "query": "we have like 30 MUI <Button>s that all pass variant=\"contained\" disableElevation size=\"small\" sx={{ textTransform: 'none' }}. clean this up please",
+    "should_trigger": true
+  },
+  {
+    "query": "signupHandler in src/routes/signup.ts is 120 lines. split it into smaller functions with clear names, no behaviour change",
+    "should_trigger": false
+  },
+  {
+    "query": "the error messages in src/cli/errors.ts are inconsistent, some end with periods and some are ALL CAPS. make them consistent and a bit friendlier",
+    "should_trigger": false
+  },
+  {
+    "query": "zod 3 doesn't seem to have a way to turn our schemas into JSON Schema for the openapi docs, so I'm planning to write a converter that walks the schema tree. schemas live in src/schemas/. can you write it?",
+    "should_trigger": true
+  },
+  {
+    "query": "upgrade react-router from v6 to v7 in the dashboard, following their migration guide. routes are in src/routes and we use createBrowserRouter",
+    "should_trigger": false
+  },
+  {
+    "query": "can you audit how apps/web uses relay? we've had a few bugs where a component re-rendered with data it never asked for, and I suspect our patterns have drifted over the last year",
+    "should_trigger": true
+  },
+  {
+    "query": "audit our package.json files for unused dependencies and anything with a GPL licence, we need a list for legal by friday",
+    "should_trigger": false
+  },
+  {
+    "query": "inject the repository as a dependency in OrderService so the tests can pass a fake instead of hitting postgres. it's in src/orders/OrderService.ts",
+    "should_trigger": false
+  },
+  {
+    "query": "our checkout functions each create their own Stripe client inside, which makes them impossible to unit test. refactor them to take their dependencies as parameters with sensible defaults",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the actual difference between dependency injection and a service locator? we're arguing about it for the new billing module",
+    "should_trigger": false
+  },
+  {
+    "query": "we use tsyringe for DI in the api. EmailService should be a singleton but the logger should be scoped per request, and right now I'm caching instances by hand in a module-level Map. can you set that up properly in src/container.ts?",
+    "should_trigger": true
+  }
+]

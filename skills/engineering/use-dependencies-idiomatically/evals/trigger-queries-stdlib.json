@@ -1,0 +1,18 @@
+[
+  {
+    "query": "in reports/summary.py there's a loop that builds a dict of lists of orders keyed by customer_id, then a second loop that counts how many each customer has, then sorts the counts. it's 25 lines, make it less clunky",
+    "should_trigger": true
+  },
+  {
+    "query": "scripts/release.mjs has a little hand-written loop over process.argv that handles --tag and --verbose. add a --dry-run flag and a short alias -n for it. we're on node 22",
+    "should_trigger": true
+  },
+  {
+    "query": "scripts/run-tests.mjs needs to find every *.test.ts under src/. we're on node 18 so i'll just write a recursive readdir walker unless you have a better idea",
+    "should_trigger": true
+  },
+  {
+    "query": "Python 3.10 service: I need to fan out ~20 async calls and cancel the rest as soon as one fails. Planning to do it with asyncio.gather and manually cancelling tasks in an except block. Can you write that in app/fanout.py?",
+    "should_trigger": true
+  }
+]

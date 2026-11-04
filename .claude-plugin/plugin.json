@@ -1,0 +1,19 @@
+{
+  "name": "swe-skills",
+  "version": "0.1.0",
+  "description": "Agent skills for software engineering. Starts with use-dependencies-idiomatically: learn each library's model before using it, instead of reinventing the wheel or fighting the framework.",
+  "author": {
+    "name": "Andy Ingram",
+    "url": "https://github.com/AndrewIngram"
+  },
+  "repository": "https://github.com/AndrewIngram/swe-skills",
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "skills",
+    "dependencies",
+    "libraries",
+    "code-review"
+  ],
+  "skills": ["./skills/engineering/use-dependencies-idiomatically"]
+}

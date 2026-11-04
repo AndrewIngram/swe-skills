@@ -1,0 +1,17 @@
+{
+  "name": "andrewingram",
+  "owner": {
+    "name": "Andy Ingram",
+    "url": "https://github.com/AndrewIngram"
+  },
+  "description": "Andy Ingram's agent skills for software engineering, as an installable Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "swe-skills",
+      "source": "./",
+      "description": "Agent skills for software engineering, starting with idiomatic use of the libraries and frameworks a project depends on.",
+      "category": "engineering",
+      "keywords": ["engineering", "skills", "dependencies", "libraries"]
+    }
+  ]
+}
