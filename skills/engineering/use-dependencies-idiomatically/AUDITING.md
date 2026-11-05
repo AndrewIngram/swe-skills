@@ -1,27 +1,29 @@
 # Auditing a codebase's use of a dependency
 
-Reached from [SKILL.md](SKILL.md) when the task is the whole codebase's use of a library, not a single change.
+Reached from [SKILL.md](SKILL.md) when the task is a codebase's use of one or more libraries, not a single change. A quick review and a full audit take the same steps; the scope sets how far each one goes.
 
-1. **Learn the model before searching the code.** Do SKILL.md step 3 from the docs, and write notes: each guarantee the library maintains, each ownership rule (generated code included), and the canonical structure of a module that uses it.
+1. **Set the scope.** From the request, write down which dependencies, which parts of the codebase, and how deep: a review of idiomatic use, or a full audit. Name what you are leaving out. Ask the user when the request leaves this open.
 
-   **Done when** every note cites the doc page it came from.
+   **Done when** the scope and its exclusions are written down.
 
-2. **List every surface the project touches**: the runtime API, generated code, compiler or codegen config, test utilities, lint plugins, and type packages checked against the runtime version.
+2. **Learn the model from the concept docs, before reading the code.** For each dependency, read its overview and concept pages far enough to answer SKILL.md step 3's model questions for the library as a whole: what it owns, what it generates, what it guarantees, and its canonical structure. That is usually the overview and a handful of concept pages per library. Learn the model whole, because feature pages read one at a time give an accurate API and a wrong model, and only the whole model shows what the code should be using and is not. Note each guarantee and ownership rule with the doc page it came from.
 
-   **Done when** each surface is assigned to a part of the audit.
+   **Done when** you can state each guarantee and ownership rule, with its source.
 
-3. **Build the checklist from the notes.** For each rule, count where the code conforms as well as where it does not. Both counts together (say 397 conforming against 43 not) show whether you are looking at a convention problem or a few one-offs.
+3. **Inventory the code in scope** against the model: which features and surfaces it uses (runtime API, generated code, codegen or compiler config, test utilities, lint plugins), and where. Note the affordances the model says fit this code that the inventory does not show.
 
-   **Done when** every rule has both counts.
+   **Done when** each surface in scope is listed with where it is used.
 
-4. **When delegating, split the work by guarantee or by surface**, so that each surface has one owner and nothing sits between the areas of the runtime API. Brief each agent with the notes and doc links, so it can find violations you have not thought of yet.
+4. **Check the code against the notes**, reading the guide or reference page for each feature as you reach it. Search deliberately for defeated guarantees, which type-check cleanly. Count a rule's conforming and violating sites when one search gives the count and the number changes the fix, such as whether a convention-wide change or a lint rule is worth it; a rough size ("three files", "most components") is enough.
 
-5. **Rank the findings** by exposure, following [REVIEWING.md](REVIEWING.md#ranking-findings). Group a rule's violations by the conditions they share, so each group is one finding.
+   **Done when** every rule in the notes has been checked across the scope.
+
+5. **When delegating, split the work by guarantee or by surface**, so that each surface has one owner and nothing sits between the areas of the runtime API. Brief each agent with the scope, the notes and the doc links, so it can find violations you have not thought of yet.
+
+6. **Rank the findings** by exposure, following [REVIEWING.md](REVIEWING.md#ranking-findings). Group a rule's violations by the conditions they share, so each group is one finding.
 
    **Done when** each finding has its conditions, the evidence for or against them, and its tier.
 
-6. **Propose enforcement** for each rule a tool can check: the library's own lint rule or compiler option first, then a project lint rule. Enforced rules are how the next change gets it right first time.
+7. **Propose follow-ups where they pay**, a line or two each: enforcement for a finding that recurs and a tool can check (the library's own lint rule or compiler option first, then a project lint rule), and guidance, per [GUIDANCE.md](GUIDANCE.md), for a lesson the next session would otherwise relearn.
 
-7. **Propose the notes as guidance**, per [GUIDANCE.md](GUIDANCE.md), for the rules a tool cannot check, so the next session starts from them.
-
-**Reply:** the notes with their sources, both counts for each rule, the findings in severity order with each one's tier and evidence, and the enforcement and guidance you propose.
+**Reply:** the scope and its exclusions; the findings in severity order, each with its tier, evidence and size; and the follow-ups you propose.

@@ -1,0 +1,10 @@
+{
+  "name": "@ledgerly/jobs",
+  "version": "3.2.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": {
+    "@ledgerly/db": "*"
+  }
+}

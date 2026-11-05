@@ -61,7 +61,10 @@ Agents tend to produce a solution at all costs. With dependencies, that shows up
 
 ## Evals
 
-Each skill keeps its evals in `evals/` beside its `SKILL.md`. `trigger-queries.json` lists realistic prompts that should and should not load the skill, including near misses that share its vocabulary. It is the input format for the description optimiser in Anthropic's `skill-creator` skill.
+Each skill keeps its evals in `evals/<skill>/`:
+
+- `trigger-queries.json` lists realistic prompts that should and should not load the skill, including near misses that share its vocabulary. It is the input format for the description optimiser in Anthropic's `skill-creator` skill.
+- The other folders are behaviour cases for `claude plugin eval`. Each one is a small fixture project with a prompt and graders, run with and without the skill.
 
 ## Acknowledgements
 

@@ -1,0 +1,51 @@
+type Query {
+  viewer: User!
+  node(id: ID!): Node
+}
+
+interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+  avatarUrl: String
+  projects(first: Int, after: String): ProjectConnection!
+}
+
+type ProjectConnection {
+  edges: [ProjectEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectEdge {
+  node: Project!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+type Project implements Node {
+  id: ID!
+  name: String!
+  status: ProjectStatus!
+  updatedAt: String!
+  memberCount: Int!
+  owner: User!
+}
+
+type Mutation {
+  archiveProject(id: ID!): Project
+}

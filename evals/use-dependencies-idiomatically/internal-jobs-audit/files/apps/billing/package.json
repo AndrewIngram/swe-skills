@@ -1,0 +1,14 @@
+{
+  "name": "@ledgerly/billing",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types src/server.ts",
+    "worker": "node --experimental-strip-types src/worker.ts"
+  },
+  "dependencies": {
+    "@ledgerly/db": "*",
+    "@ledgerly/jobs": "*"
+  }
+}

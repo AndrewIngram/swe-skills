@@ -22,7 +22,7 @@ Small plain code that does its job clearly passes: idiomatic code reaches for a 
 Rank by what the library is there to provide, and by whether our usage reaches it.
 
 1. **Name the conditions.** Each failure needs certain conditions to cause harm: concurrency, data volumes, how long work runs, how deploys roll out. Take them from the docs.
-2. **Check our usage for them**, from evidence: configuration, infrastructure, call sites, data volumes, deploy practice. Ask the user for what the repository cannot show, such as production traffic or how long runs last.
+2. **Check our usage for them**, from the cheapest evidence that settles the tier: configuration, infrastructure, call sites, data volumes, deploy practice. A trace through the code and the docs is usually enough. Run an experiment, such as a reproduction, when the tier or the fix turns on behaviour the trace cannot settle. Ask the user for what the repository cannot show, such as production traffic or how long runs last.
 3. **Assign a tier.** A finding whose conditions occur today is **live**, even if nothing has failed yet. One that needs a change in our usage is **latent**: name the change that would expose it. One database session shared across threads breaks only when two threads use it at once, so in a single-threaded worker it is latent until someone adds concurrency.
 4. **Order them**: live findings first, then latent ones. Within each tier, a defeated guarantee comes first, then the other fighting smells, then underuse. A house rule that encodes the library's model takes the model's severity.
 

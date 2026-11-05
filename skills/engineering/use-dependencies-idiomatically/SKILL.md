@@ -38,7 +38,9 @@ Writing code that uses a dependency follows the steps below. The other tasks sta
    1. **The project's guidance for this dependency**, found and kept per [GUIDANCE.md](GUIDANCE.md). It is the authority on deliberate house decisions and a cache of the library's model: when its recorded version differs from the lockfile, or a claim decides your approach, confirm it in the sources below.
    2. **A reference checkout**: the dependency's repository cloned into the project or fetched by a tool such as `opensrc`, usually with a pointer in `AGENTS.md` or `CLAUDE.md`. Check its tag against the lockfile. Its docs, examples and tests are the best record of intended use.
    3. **The installed package**: exported types and their doc comments, often stripped of docs and examples.
-   4. **Online, when neither of the last two has docs**: the official docs for that major version, concept and guide pages as well as the API reference; then the upstream repository at the matching tag.
+   4. **Online, when neither of the last two has docs**: the official docs for that major version, then the upstream repository at the matching tag.
+
+   In whichever source has docs, read the overview and concept pages before the reference for the feature you need. The guarantees live there, and a reference page read on its own gives the API without the model.
 
    Build only on the **public API**: what the docs describe, reached through declared entry points (an `exports` map, `__all__`, names without a leading underscore). Read source to understand behaviour; anything you found only there is private. Semver protects the public API and nothing else. Your memory of the library is a hypothesis to check against the docs, and runtime files you happen to open are no substitute for them.
 
