@@ -1,0 +1,3 @@
+interface:
+  display_name: "Deps Mental Model"
+  short_description: "Learn a library's model before writing code against it"

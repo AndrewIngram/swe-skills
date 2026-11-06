@@ -1,6 +1,6 @@
 # Project guidance for a dependency
 
-Reached from [SKILL.md](SKILL.md) step 3, to find guidance, and from its Reply, to propose some. Guidance is a **cache** of what step 3 learned, so the next session starts from it instead of relearning the model.
+Guidance is a **cache** of what [Learning the model](SKILL.md#learning-the-model) teaches, so the next session starts from it instead of relearning the model. Every task in these skills reads it there, and proposes additions in its reply.
 
 ## Finding it
 
@@ -24,7 +24,7 @@ Record what an agent cannot find by looking:
 - the constraints our usage runs under, and which output each applies to (for example: API responses pass through a gateway with a fixed payload limit, so the serializer's defaults bound every endpoint), with any incident that taught it;
 - the version the entry was written against.
 
-Leave the API itself to the docs, which step 3 reads anyway. A rule a tool can check belongs in a lint rule or compiler option, with the guidance pointing at it.
+Leave the API itself to the docs, which learning the model reads anyway. A rule a tool can check belongs in a lint rule or compiler option, with the guidance pointing at it.
 
 ## Proposing it
 

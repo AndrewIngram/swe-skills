@@ -1,0 +1,5 @@
+interface:
+  display_name: "Deps Usage Audit"
+  short_description: "Audit how a codebase uses its dependencies"
+policy:
+  allow_implicit_invocation: false

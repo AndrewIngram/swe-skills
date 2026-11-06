@@ -1,0 +1,5 @@
+interface:
+  display_name: "Deps Upgrade"
+  short_description: "Add or upgrade a dependency with its risk triaged"
+policy:
+  allow_implicit_invocation: false

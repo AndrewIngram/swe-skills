@@ -7,4 +7,4 @@ timeout_seconds: 1200
 allowed_tools: [Read, Glob, Grep, Skill, Agent, TodoWrite]
 ---
 
-Can you audit how this app uses Relay? We're about to onboard a few more engineers onto the frontend, and I want to know whether we're using it the way it's meant to be used, and what to fix first.
+/deps-usage-audit Can you audit how this app uses Relay? We're about to onboard a few more engineers onto the frontend, and I want to know whether we're using it the way it's meant to be used, and what to fix first.

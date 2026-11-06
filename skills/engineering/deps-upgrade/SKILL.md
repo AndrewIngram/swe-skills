@@ -1,12 +1,18 @@
+---
+name: deps-upgrade
+description: "Add or upgrade a dependency: map our usage and its constraints, triage the risk, and check what the changelog will not tell you."
+disable-model-invocation: true
+---
+
 # Adding or upgrading a dependency
 
-Reached from [SKILL.md](SKILL.md) when the right tool is not installed yet, when the installed version lacks what you need, or when an upgrade is the task.
+Run by name, `/deps-upgrade` in Claude Code or `$deps-upgrade` in Codex, or reached from [deps-mental-model](../deps-mental-model/SKILL.md) when the right tool is not installed yet, when the installed version lacks what you need, or when an upgrade is the task. Read [deps-mental-model](../deps-mental-model/SKILL.md) first, as reference: its [Learning the model](../deps-mental-model/SKILL.md#learning-the-model) section and its `skip:` rule apply here.
 
 ## Adding a package
 
 Ask the user before adding a package new to the project. Propose it with:
 
-- the general problem it solves (SKILL.md step 1), and how its model fits (step 3);
+- the general problem it solves (deps-mental-model step 1), and how its model fits, per [Learning the model](../deps-mental-model/SKILL.md#learning-the-model);
 - why the dependencies already installed do not fit;
 - maintenance signals: release activity, types, license, and bundle size for frontend code.
 
@@ -23,7 +29,7 @@ A build-only or test-only tool needs only the changelog and a green build. Every
 1. **Map our usage and its constraints.**
    - Which features, extensions and options the codebase uses, found from its imports and configuration.
    - What the library's output reaches beyond the process: persisted data (documents, serialized state, caches), wire formats, generated files, other services.
-   - The limits that usage runs under: memory and CPU where it runs, storage and payload size, timeouts, bundle size, rate limits, cost. Look in infrastructure config, the platform's documented limits, past incidents, and the project's guidance ([GUIDANCE.md](GUIDANCE.md)).
+   - The limits that usage runs under: memory and CPU where it runs, storage and payload size, timeouts, bundle size, rate limits, cost. Look in infrastructure config, the platform's documented limits, past incidents, and the project's guidance ([GUIDANCE.md](../deps-mental-model/GUIDANCE.md)).
 
    **Done when** you can say what we persist or send through the dependency, and which limit each would hit first.
 
@@ -46,12 +52,12 @@ A build-only or test-only tool needs only the changelog and a green build. Every
    - what the upgrade unlocks for this problem, or why it is due;
    - the size of the jump in semver terms: patch, minor or major;
    - the breaking changes that touch this codebase, found by searching for the APIs they name;
-   - the areas you checked, with their numbers, and the areas you skipped, with the reason;
+   - the areas you checked, with their numbers and the doc page, issue or measurement that settled each, and the areas you skipped, with the reason;
    - what else is tied to the version: peer dependencies, sibling packages released together, the runtime;
    - whether it can be rolled back. When the new version rewrites persisted data, rolling back the code leaves the data in the new format, so the upgrade is a data migration and needs a rollout plan: a flag, a canary, or a reader that accepts both formats.
 
 Ask before upgrading. A minor bump with no behaviour change from step 3 is usually cheap and can land with the change. A major or runtime upgrade, or one that changes persisted data, is the user's call, and usually its own change. When the upgrade would unlock what you need, use the escape hatch or a small adapter behind a seam until it lands, with a comment naming the version that will replace it.
 
-After the upgrade, record what step 1 found in the project's guidance for the dependency, and on a major upgrade recheck the rest of that guidance ([GUIDANCE.md](GUIDANCE.md)).
+After the upgrade, record what step 1 found in the project's guidance for the dependency, and on a major upgrade recheck the rest of that guidance ([GUIDANCE.md](../deps-mental-model/GUIDANCE.md)).
 
 **Done when** the user has decided with the measurements in hand, and any stopgap names the version that replaces it.

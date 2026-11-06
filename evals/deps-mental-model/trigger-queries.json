@@ -112,10 +112,6 @@
     "should_trigger": true
   },
   {
-    "query": "can you audit how apps/web uses relay? we've had a few bugs where a component re-rendered with data it never asked for, and I suspect our patterns have drifted over the last year",
-    "should_trigger": true
-  },
-  {
     "query": "audit our package.json files for unused dependencies and anything with a GPL licence, we need a list for legal by friday",
     "should_trigger": false
   },

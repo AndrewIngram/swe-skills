@@ -1,7 +1,7 @@
 {
   "name": "swe-skills",
-  "version": "0.1.2",
-  "description": "Agent skills for software engineering. Starts with use-dependencies-idiomatically: learn each library's model before using it, instead of reinventing the wheel or fighting the framework.",
+  "version": "0.2.0",
+  "description": "Agent skills for software engineering. deps-mental-model learns each library's model from its docs before code uses it; deps-upgrade and deps-usage-audit handle upgrades and audits on top of it.",
   "author": {
     "name": "Andy Ingram",
     "url": "https://github.com/AndrewIngram"
@@ -15,5 +15,9 @@
     "libraries",
     "code-review"
   ],
-  "skills": ["./skills/engineering/use-dependencies-idiomatically"]
+  "skills": [
+    "./skills/engineering/deps-mental-model",
+    "./skills/engineering/deps-upgrade",
+    "./skills/engineering/deps-usage-audit"
+  ]
 }
